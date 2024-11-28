@@ -2,10 +2,10 @@
 #include <vector>
 using namespace std;
 
-// Estructura para almacenar salud y índice de un monstruo
+// Estructura para almacenar salud e índice de un monstruo
 struct Monstruo {
-    int salud;
-    int indice;
+    int salud;  // Salud actual del monstruo
+    int indice; // Índice original del monstruo
 };
 
 // Función para "apilar" (heapify) el vector
@@ -14,22 +14,22 @@ void heapify(vector<Monstruo>& arr, int n, int i) {
     int left = 2 * i + 1;   // Hijo izquierdo
     int right = 2 * i + 2;  // Hijo derecho
 
-    // Si el hijo izquierdo es mayor que el nodo más grande actual
+    // Comparar el hijo izquierdo con el mayor
     if (left < n && (arr[left].salud > arr[largest].salud || 
                     (arr[left].salud == arr[largest].salud && arr[left].indice < arr[largest].indice))) {
         largest = left;
     }
 
-    // Si el hijo derecho es mayor que el nodo más grande actual
+    // Comparar el hijo derecho con el mayor
     if (right < n && (arr[right].salud > arr[largest].salud || 
                      (arr[right].salud == arr[largest].salud && arr[right].indice < arr[largest].indice))) {
         largest = right;
     }
 
-    // Si el mayor no es el nodo actual
+    // Si el mayor no es el nodo actual, intercambiar y continuar heapify
     if (largest != i) {
-        swap(arr[i], arr[largest]); // Intercambiamos
-        heapify(arr, n, largest);  // Apilar recursivamente
+        swap(arr[i], arr[largest]);
+        heapify(arr, n, largest);
     }
 }
 
@@ -37,7 +37,7 @@ void heapify(vector<Monstruo>& arr, int n, int i) {
 void heapSort(vector<Monstruo>& arr) {
     int n = arr.size();
 
-    // Construir el heap
+    // Construir el heap (reorganizar el arreglo)
     for (int i = n / 2 - 1; i >= 0; i--) {
         heapify(arr, n, i);
     }
@@ -45,31 +45,34 @@ void heapSort(vector<Monstruo>& arr) {
     // Extraer elementos del heap uno por uno
     for (int i = n - 1; i >= 0; i--) {
         swap(arr[0], arr[i]); // Mover el nodo raíz al final
-        heapify(arr, i, 0);   // Llamar a heapify en el heap reducido
+        heapify(arr, i, 0);   // Aplicar heapify al heap reducido
     }
 }
 
-// Función para resolver cada caso
+// Función para resolver cada caso de prueba
 void resolverCaso() {
     int n, k;
     cin >> n >> k;
 
+    // Leer la información de los monstruos
     vector<Monstruo> monstruos(n);
     for (int i = 0; i < n; i++) {
         cin >> monstruos[i].salud;
-        monstruos[i].indice = i + 1; // Índice 1-based
+        monstruos[i].indice = i + 1; // Índices 1-based
     }
 
-    // Ordenar usando Heap Sort
+    // Ordenar los monstruos usando Heap Sort (innecesario para max-heap dinámico)
     heapSort(monstruos);
 
     vector<int> ordenMuerte;
 
+    // Simular el proceso de eliminación
     while (!monstruos.empty()) {
-        // El monstruo con mayor salud está al final del array
+        // El monstruo con mayor salud está al final del arreglo
         Monstruo& objetivo = monstruos.back();
         objetivo.salud -= k;
 
+        // Si el monstruo muere, agregarlo al orden de muerte
         if (objetivo.salud <= 0) {
             ordenMuerte.push_back(objetivo.indice);
             monstruos.pop_back(); // Eliminar el monstruo
@@ -89,8 +92,11 @@ void resolverCaso() {
 int main() {
     int t;
     cin >> t;
+
+    // Resolver cada caso de prueba
     while (t--) {
         resolverCaso();
     }
+
     return 0;
 }
