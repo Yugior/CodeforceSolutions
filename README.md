@@ -1,3 +1,3 @@
 # CodeforceSolutions
 
-En este apartado van los links de los videos
+El archivo de la presentación no se puede subir por temas de tamaño.
